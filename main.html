@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Armenian Communities</title>
+  <meta name="description" content="A single-page directory of Armenian communities with modern cards, theme toggle, platforms and member counts." />
+  <style>
+    :root {
+      --bg: #0b1020; --bg-elev: #131a2e; --text: #eaf0ff; --muted: #a7b0c8;
+      --card: #121a2b; --ring: #6ea8ff; --accent: #5b8cff; --accent-2: #a58bff;
+      --shadow: 0 12px 36px rgba(0,0,0,.55); --border: rgba(255,255,255,.08);
+      --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent);
+    }
+    html[data-theme="light"] { --bg:#f6f8ff; --bg-elev:#ffffff; --text:#0f172a; --muted:#51607a; --card:#ffffff; --ring:#335dff; --accent:#335dff; --accent-2:#8a5cff; --shadow:0 10px 30px rgba(16,24,40,.10); --border:rgba(2,6,23,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 92%, transparent); }
+    html[data-theme="dark"] { --bg:#0b1020; --bg-elev:#10172b; --text:#eaf0ff; --muted:#9aa7c9; --card:#0f1528; --ring:#6ea8ff; --accent:#6ea8ff; --accent-2:#a58bff; --shadow:0 12px 36px rgba(0,0,0,.55); --border:rgba(255,255,255,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent); }
+
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,Inter,Arial,"Noto Sans",system-ui,sans-serif;color:var(--text);
+      background:radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.12), transparent 50%),
+                 radial-gradient(1000px 500px at 110% 0%, rgba(168,85,247,.10), transparent 50%),
+                 linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px 64px}
+
+    header{position:sticky;top:0;z-index:10;backdrop-filter:saturate(1.2) blur(10px);background:color-mix(in oklab, var(--bg-elev) 75%, transparent);border-bottom:1px solid var(--border)}
+    .hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;max-width:1200px;margin:0 auto;padding:14px 18px}
+    .title{display:flex;align-items:center;gap:12px;justify-self:center}
+    .flag-arm{width:24px;height:16px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.12) inset}
+    .flag-arm{background:linear-gradient(#d92d2d 0 0, #d92d2d 33.33%, #1f4ed6 33.33% 66.66%, #f39b1f 66.66%)}
+    h1{margin:0;font-size:clamp(20px,3vw,28px);letter-spacing:.2px}
+    .actions{justify-self:end;display:flex;align-items:center;gap:10px}
+
+    .toggle{--h:34px;--w:74px;--p:4px;width:var(--w);height:var(--h);border-radius:999px;padding:var(--p);background:color-mix(in oklab, var(--bg-elev) 80%, transparent);border:1px solid var(--border);position:relative;cursor:pointer;user-select:none;display:grid;grid-template-columns:1fr 1fr;place-items:center;color:var(--muted);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+    .knob{position:absolute;inset:var(--p) auto var(--p) var(--p);width:calc(var(--h) - var(--p)*2);height:calc(var(--h) - var(--p)*2);border-radius:999px;background:linear-gradient(180deg, var(--bg-elev), color-mix(in oklab, var(--bg-elev) 75%, #000));box-shadow:var(--shadow),0 0 0 1px var(--border);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:grid;place-items:center;font-size:14px;color:var(--muted)}
+    .toggle[data-mode="dark"] .knob{transform:translateX(calc(var(--w) - var(--h)))}
+
+    main{margin-top:24px}
+    #cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+
+    .community-card{position:relative;isolation:isolate;background:linear-gradient(180deg, color-mix(in oklab, var(--card) 98%, transparent) 0%, color-mix(in oklab, var(--card) 100%, transparent) 100%);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;padding:16px;display:grid;grid-template-columns:64px 1fr;gap:14px;transform:translateY(6px);opacity:0}
+    .community-card.revealed{animation:floatIn .6s cubic-bezier(.2,.9,.2,1) forwards}
+    @keyframes floatIn{to{transform:translateY(0);opacity:1}}
+
+    .logo{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-weight:700;color:#fff;letter-spacing:.5px;font-size:20px;background:conic-gradient(from 150deg, var(--accent), var(--accent-2), var(--accent));box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);position:relative;overflow:hidden}
+    .logo::after{content:"";position:absolute;inset:0;background:radial-gradient(60px 20px at -10% -10%, rgba(255,255,255,.6), transparent),radial-gradient(120px 30px at 120% 120%, rgba(0,0,0,.18), transparent);pointer-events:none}
+
+    .card-body{display:grid;gap:10px;align-content:start}
+    .card-title{margin:0;font-size:18px;letter-spacing:.2px}
+    .card-desc{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+
+    .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;justify-content:space-between}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.2px;color:var(--text);background:var(--chip-bg);border:1px solid var(--border)}
+    .chip.accent{color:#fff;background:linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 72%, #000));border:1px solid color-mix(in oklab, var(--accent) 70%, #000);box-shadow:0 6px 14px color-mix(in oklab, var(--accent) 30%, transparent)}
+
+    .platforms{display:flex;flex-wrap:wrap;gap:8px}
+    .platforms a{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+    .platforms .pill{padding:6px 10px;border-radius:999px;background:var(--chip-bg);border:1px solid var(--border);font-size:13px;color:var(--text)}
+
+    .cta{margin-top:4px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;font-weight:600;letter-spacing:.2px;cursor:pointer;background:linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 72%, #000));color:#fff;border:1px solid color-mix(in oklab, var(--accent) 70%, #000);box-shadow:0 12px 22px color-mix(in oklab, var(--accent) 28%, transparent);transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;text-decoration:none;user-select:none}
+    .cta:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 16px 26px color-mix(in oklab, var(--accent) 34%, transparent)}
+
+    .community-card::before{content:"";position:absolute;inset:-1px;z-index:-1;border-radius:20px;background:radial-gradient(120px 50px at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%);transition:opacity .2s ease;opacity:0}
+    .community-card:hover::before{opacity:1}
+
+    @media (prefers-reduced-motion: reduce){.community-card{transform:none!important;opacity:1!important;animation:none!important}.cta,.toggle .knob{transition:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hdr">
+      <div></div>
+      <div class="title" aria-label="Armenian Communities">
+        <span class="flag-arm" role="img" aria-label="Armenian flag"></span>
+        <h1>Armenian Communities</h1>
+      </div>
+      <div class="actions">
+        <div id="themeToggle" class="toggle" role="button" aria-label="Toggle theme" tabindex="0" data-mode="light">
+          <span aria-hidden="true">☀️</span>
+          <span aria-hidden="true">🌙</span>
+          <div class="knob" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="cards">
+      <article class="community-card" data-initials="YT">
+        <div class="logo" aria-hidden="true"><span>YT</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Yerevan Tech Community</h3>
+          <p class="card-desc">A hub for engineers, founders, and designers in Yerevan. Meetups, workshops, and project nights.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Discord">Discord</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$4/mo</span>
+              <span class="chip accent">$40/yr</span>
+              <span class="chip">Members • 1,240</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2022-03-10</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Yerevan Tech Community">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="GC">
+        <div class="logo" aria-hidden="true"><span>GC</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Gyumri Creators Club</h3>
+          <p class="card-desc">Artists, makers, and storytellers building together in Shirak. Open studios and mentorship.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">Free</span>
+              <span class="chip">Members • 680</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2020-09-20</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Gyumri Creators Club">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="DC">
+        <div class="logo" aria-hidden="true"><span>DC</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Diaspora Connect</h3>
+          <p class="card-desc">A global network linking Armenians abroad with opportunities in Armenia — career, volunteering, and culture.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Circle">Circle</a>
+            <a class="pill" href="#" aria-label="Discord">Discord</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$7/mo</span>
+              <span class="chip accent">$70/yr</span>
+              <span class="chip">Members • 3,900</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2018-01-15</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Diaspora Connect">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="HN">
+        <div class="logo" aria-hidden="true"><span>HN</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Armenian Hikers Network</h3>
+          <p class="card-desc">Weekend treks, safety training, and trail cleanup projects across Armenia’s mountains and valleys.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$3/mo</span>
+              <span class="chip accent">$25/yr</span>
+              <span class="chip">Members • 2,150</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2019-05-28</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Armenian Hikers Network">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="KY">
+        <div class="logo" aria-hidden="true"><span>KY</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Kotayk Youth Hub</h3>
+          <p class="card-desc">Local youth programs in Kotayk: debate club, coding sessions, entrepreneurship labs, and volunteering.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">Free</span>
+              <span class="chip">Members • 520</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2021-11-02</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Kotayk Youth Hub">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="AC">
+        <div class="logo" aria-hidden="true"><span>AC</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Arts & Culture Circle</h3>
+          <p class="card-desc">Monthly salons, museum trips, and talks celebrating Armenian art, literature, and music.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$2/mo</span>
+              <span class="chip accent">$18/yr</span>
+              <span class="chip">Members • 940</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2017-06-14</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Arts & Culture Circle">Join community</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const root=document.documentElement;const toggle=document.getElementById('themeToggle');
+    function setTheme(mode){root.setAttribute('data-theme',mode);toggle.setAttribute('data-mode',mode);localStorage.setItem('theme',mode)}
+    (function(){const saved=localStorage.getItem('theme');const preferred=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';setTheme(saved||preferred)})();
+    toggle.addEventListener('click',()=>setTheme(toggle.getAttribute('data-mode')==='dark'?'light':'dark'));
+    toggle.addEventListener('keyup',(e)=>{if(e.key==='Enter'||e.key===' ')toggle.click()});
+
+    const io=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px',threshold:0.1});
+    document.querySelectorAll('.community-card').forEach(card=>io.observe(card));
+
+    document.querySelectorAll('.community-card').forEach(card=>{card.addEventListener('pointermove',(e)=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100;const y=(e.clientY-r.top)/r.height*100;card.style.setProperty('--mx',x+'%');card.style.setProperty('--my',y+'%')})});
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Armenian Communities</title>
+  <meta name="description" content="A single-page directory of Armenian communities with modern cards, theme toggle, platforms and member counts." />
+  <style>
+    :root {
+      --bg: #0b1020; --bg-elev: #131a2e; --text: #eaf0ff; --muted: #a7b0c8;
+      --card: #121a2b; --ring: #6ea8ff; --accent: #5b8cff; --accent-2: #a58bff;
+      --shadow: 0 12px 36px rgba(0,0,0,.55); --border: rgba(255,255,255,.08);
+      --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent);
+    }
+    html[data-theme="light"] { --bg:#f6f8ff; --bg-elev:#ffffff; --text:#0f172a; --muted:#51607a; --card:#ffffff; --ring:#335dff; --accent:#335dff; --accent-2:#8a5cff; --shadow:0 10px 30px rgba(16,24,40,.10); --border:rgba(2,6,23,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 92%, transparent); }
+    html[data-theme="dark"] { --bg:#0b1020; --bg-elev:#10172b; --text:#eaf0ff; --muted:#9aa7c9; --card:#0f1528; --ring:#6ea8ff; --accent:#6ea8ff; --accent-2:#a58bff; --shadow:0 12px 36px rgba(0,0,0,.55); --border:rgba(255,255,255,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent); }
+
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,Inter,Arial,"Noto Sans",system-ui,sans-serif;color:var(--text);
+      background:radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.12), transparent 50%),
+                 radial-gradient(1000px 500px at 110% 0%, rgba(168,85,247,.10), transparent 50%),
+                 linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px 64px}
+
+    header{position:sticky;top:0;z-index:10;backdrop-filter:saturate(1.2) blur(10px);background:color-mix(in oklab, var(--bg-elev) 75%, transparent);border-bottom:1px solid var(--border)}
+    .hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;max-width:1200px;margin:0 auto;padding:14px 18px}
+    .title{display:flex;align-items:center;gap:12px;justify-self:center}
+    .flag-arm{width:24px;height:16px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.12) inset}
+    .flag-arm{background:linear-gradient(#d92d2d 0 0, #d92d2d 33.33%, #1f4ed6 33.33% 66.66%, #f39b1f 66.66%)}
+    h1{margin:0;font-size:clamp(20px,3vw,28px);letter-spacing:.2px}
+    .actions{justify-self:end;display:flex;align-items:center;gap:10px}
+
+    .toggle{--h:34px;--w:74px;--p:4px;width:var(--w);height:var(--h);border-radius:999px;padding:var(--p);background:color-mix(in oklab, var(--bg-elev) 80%, transparent);border:1px solid var(--border);position:relative;cursor:pointer;user-select:none;display:grid;grid-template-columns:1fr 1fr;place-items:center;color:var(--muted);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+    .knob{position:absolute;inset:var(--p) auto var(--p) var(--p);width:calc(var(--h) - var(--p)*2);height:calc(var(--h) - var(--p)*2);border-radius:999px;background:linear-gradient(180deg, var(--bg-elev), color-mix(in oklab, var(--bg-elev) 75%, #000));box-shadow:var(--shadow),0 0 0 1px var(--border);transition:transform .35s cubic-bezier(.2,.8,.2,1);display:grid;place-items:center;font-size:14px;color:var(--muted)}
+    .toggle[data-mode="dark"] .knob{transform:translateX(calc(var(--w) - var(--h)))}
+
+    main{margin-top:24px}
+    #cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+
+    .community-card{position:relative;isolation:isolate;background:linear-gradient(180deg, color-mix(in oklab, var(--card) 98%, transparent) 0%, color-mix(in oklab, var(--card) 100%, transparent) 100%);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;padding:16px;display:grid;grid-template-columns:64px 1fr;gap:14px;transform:translateY(6px);opacity:0}
+    .community-card.revealed{animation:floatIn .6s cubic-bezier(.2,.9,.2,1) forwards}
+    @keyframes floatIn{to{transform:translateY(0);opacity:1}}
+
+    .logo{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-weight:700;color:#fff;letter-spacing:.5px;font-size:20px;background:conic-gradient(from 150deg, var(--accent), var(--accent-2), var(--accent));box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);position:relative;overflow:hidden}
+    .logo::after{content:"";position:absolute;inset:0;background:radial-gradient(60px 20px at -10% -10%, rgba(255,255,255,.6), transparent),radial-gradient(120px 30px at 120% 120%, rgba(0,0,0,.18), transparent);pointer-events:none}
+
+    .card-body{display:grid;gap:10px;align-content:start}
+    .card-title{margin:0;font-size:18px;letter-spacing:.2px}
+    .card-desc{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+
+    .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;justify-content:space-between}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.2px;color:var(--text);background:var(--chip-bg);border:1px solid var(--border)}
+    .chip.accent{color:#fff;background:linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 72%, #000));border:1px solid color-mix(in oklab, var(--accent) 70%, #000);box-shadow:0 6px 14px color-mix(in oklab, var(--accent) 30%, transparent)}
+
+    .platforms{display:flex;flex-wrap:wrap;gap:8px}
+    .platforms a{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+    .platforms .pill{padding:6px 10px;border-radius:999px;background:var(--chip-bg);border:1px solid var(--border);font-size:13px;color:var(--text)}
+
+    .cta{margin-top:4px;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;font-weight:600;letter-spacing:.2px;cursor:pointer;background:linear-gradient(180deg, var(--accent), color-mix(in oklab, var(--accent) 72%, #000));color:#fff;border:1px solid color-mix(in oklab, var(--accent) 70%, #000);box-shadow:0 12px 22px color-mix(in oklab, var(--accent) 28%, transparent);transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;text-decoration:none;user-select:none}
+    .cta:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 16px 26px color-mix(in oklab, var(--accent) 34%, transparent)}
+
+    .community-card::before{content:"";position:absolute;inset:-1px;z-index:-1;border-radius:20px;background:radial-gradient(120px 50px at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%);transition:opacity .2s ease;opacity:0}
+    .community-card:hover::before{opacity:1}
+
+    @media (prefers-reduced-motion: reduce){.community-card{transform:none!important;opacity:1!important;animation:none!important}.cta,.toggle .knob{transition:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hdr">
+      <div></div>
+      <div class="title" aria-label="Armenian Communities">
+        <span class="flag-arm" role="img" aria-label="Armenian flag"></span>
+        <h1>Armenian Communities</h1>
+      </div>
+      <div class="actions">
+        <div id="themeToggle" class="toggle" role="button" aria-label="Toggle theme" tabindex="0" data-mode="light">
+          <span aria-hidden="true">☀️</span>
+          <span aria-hidden="true">🌙</span>
+          <div class="knob" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="cards">
+      <article class="community-card" data-initials="YT">
+        <div class="logo" aria-hidden="true"><span>YT</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Yerevan Tech Community</h3>
+          <p class="card-desc">A hub for engineers, founders, and designers in Yerevan. Meetups, workshops, and project nights.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Discord">Discord</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$4/mo</span>
+              <span class="chip accent">$40/yr</span>
+              <span class="chip">Members • 1,240</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2022-03-10</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Yerevan Tech Community">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="GC">
+        <div class="logo" aria-hidden="true"><span>GC</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Gyumri Creators Club</h3>
+          <p class="card-desc">Artists, makers, and storytellers building together in Shirak. Open studios and mentorship.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">Free</span>
+              <span class="chip">Members • 680</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2020-09-20</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Gyumri Creators Club">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="DC">
+        <div class="logo" aria-hidden="true"><span>DC</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Diaspora Connect</h3>
+          <p class="card-desc">A global network linking Armenians abroad with opportunities in Armenia — career, volunteering, and culture.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Circle">Circle</a>
+            <a class="pill" href="#" aria-label="Discord">Discord</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$7/mo</span>
+              <span class="chip accent">$70/yr</span>
+              <span class="chip">Members • 3,900</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2018-01-15</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Diaspora Connect">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="HN">
+        <div class="logo" aria-hidden="true"><span>HN</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Armenian Hikers Network</h3>
+          <p class="card-desc">Weekend treks, safety training, and trail cleanup projects across Armenia’s mountains and valleys.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$3/mo</span>
+              <span class="chip accent">$25/yr</span>
+              <span class="chip">Members • 2,150</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2019-05-28</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Armenian Hikers Network">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="KY">
+        <div class="logo" aria-hidden="true"><span>KY</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Kotayk Youth Hub</h3>
+          <p class="card-desc">Local youth programs in Kotayk: debate club, coding sessions, entrepreneurship labs, and volunteering.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">Free</span>
+              <span class="chip">Members • 520</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2021-11-02</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Kotayk Youth Hub">Join community</a>
+        </div>
+      </article>
+
+      <article class="community-card" data-initials="AC">
+        <div class="logo" aria-hidden="true"><span>AC</span></div>
+        <div class="card-body">
+          <h3 class="card-title">Arts & Culture Circle</h3>
+          <p class="card-desc">Monthly salons, museum trips, and talks celebrating Armenian art, literature, and music.</p>
+
+          <div class="platforms" aria-label="Online platforms">
+            <a class="pill" href="#" aria-label="Facebook">Facebook</a>
+            <a class="pill" href="#" aria-label="Telegram">Telegram</a>
+          </div>
+
+          <div class="row">
+            <div class="chips">
+              <span class="chip accent">$2/mo</span>
+              <span class="chip accent">$18/yr</span>
+              <span class="chip">Members • 940</span>
+            </div>
+            <span class="chip" aria-label="Created date">Created: 2017-06-14</span>
+          </div>
+
+          <a class="cta" href="#" aria-label="Join Arts & Culture Circle">Join community</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const root=document.documentElement;const toggle=document.getElementById('themeToggle');
+    function setTheme(mode){root.setAttribute('data-theme',mode);toggle.setAttribute('data-mode',mode);localStorage.setItem('theme',mode)}
+    (function(){const saved=localStorage.getItem('theme');const preferred=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';setTheme(saved||preferred)})();
+    toggle.addEventListener('click',()=>setTheme(toggle.getAttribute('data-mode')==='dark'?'light':'dark'));
+    toggle.addEventListener('keyup',(e)=>{if(e.key==='Enter'||e.key===' ')toggle.click()});
+
+    const io=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px',threshold:0.1});
+    document.querySelectorAll('.community-card').forEach(card=>io.observe(card));
+
+    document.querySelectorAll('.community-card').forEach(card=>{card.addEventListener('pointermove',(e)=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100;const y=(e.clientY-r.top)/r.height*100;card.style.setProperty('--mx',x+'%');card.style.setProperty('--my',y+'%')})});
+  </script>
+</body>
+</html>
