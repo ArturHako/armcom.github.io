@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Yerevan Tech Community",
+    "logoImage": "assets/logos/yerevan-tech.png",
+    "membershipCost": { "monthly": "$4/mo", "yearly": "$40/yr" },
+    "colors": ["#6ea8ff", "#a58bff"],
+    "founderImage": "assets/founders/yerevan-tech.jpg",
+    "founderName": "Ani Harutyunyan",
+    "foundedDate": "2022-03-10",
+    "membersCount": 1240,
+    "platforms": [
+      { "name": "Discord", "url": "#" },
+      { "name": "Telegram", "url": "#" },
+      { "name": "Facebook", "url": "#" }
+    ]
+  },
+  {
+    "name": "Gyumri Creators Club2",
+    "logoImage": "assets/logos/gyumri-creators.png",
+    "membershipCost": { "monthly": "Free" },
+    "colors": ["#335dff", "#8a5cff"],
+    "founderImage": "assets/founders/gyumri-creators.jpg",
+    "founderName": "Tigran Sargsyan",
+    "foundedDate": "2020-09-20",
+    "membersCount": 680,
+    "platforms": [
+      { "name": "Telegram", "url": "#" },
+      { "name": "Facebook", "url": "#" }
+    ]
+  },
+  {
+    "name": "Diaspora Connect",
+    "logoImage": "assets/logos/diaspora-connect.png",
+    "membershipCost": { "monthly": "$7/mo", "yearly": "$70/yr" },
+    "colors": ["#5b8cff", "#a58bff"],
+    "founderImage": "assets/founders/diaspora-connect.jpg",
+    "founderName": "Lilit Hakobyan",
+    "foundedDate": "2018-01-15",
+    "membersCount": 3900,
+    "platforms": [
+      { "name": "Circle", "url": "#" },
+      { "name": "Discord", "url": "#" },
+      { "name": "Telegram", "url": "#" }
+    ]
+  },
+  {
+    "name": "Armenian Hikers Network",
+    "logoImage": "assets/logos/hikers-network.png",
+    "membershipCost": { "monthly": "$3/mo", "yearly": "$25/yr" },
+    "colors": ["#6ea8ff", "#8a5cff"],
+    "founderImage": "assets/founders/hikers-network.jpg",
+    "founderName": "Gor Petrosyan",
+    "foundedDate": "2019-05-28",
+    "membersCount": 2150,
+    "platforms": [
+      { "name": "Facebook", "url": "#" },
+      { "name": "Telegram", "url": "#" }
+    ]
+  },
+  {
+    "name": "Arts & Culture Circle",
+    "logoImage": "assets/logos/arts-culture.png",
+    "membershipCost": { "monthly": "$2/mo", "yearly": "$18/yr" },
+    "colors": ["#335dff", "#a58bff"],
+    "founderImage": "assets/founders/arts-culture.jpg",
+    "founderName": "Mariam Grigoryan",
+    "foundedDate": "2017-06-14",
+    "membersCount": 940,
+    "platforms": [
+      { "name": "Facebook", "url": "#" },
+      { "name": "Telegram", "url": "#" }
+    ]
+  }
+]
