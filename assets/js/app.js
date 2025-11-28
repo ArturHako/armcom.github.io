@@ -14,11 +14,13 @@ function cardEl(data){
   article.style.setProperty('--accent', data.colors?.[0]||'var(--accent)');
   article.style.setProperty('--accent-2', data.colors?.[1]||'var(--accent-2)');
 
+  // Logo
   const logo=document.createElement('div');
   logo.className='logo';
   if(data.logoImage){
     const img=document.createElement('img');
-    img.src=data.logoImage; img.alt=`${data.name} logo`; img.width=64; img.height=64; img.style.borderRadius='16px'; img.style.width='64px'; img.style.height='64px';
+    img.src=data.logoImage;
+    img.alt=`${data.name} logo`;
     logo.appendChild(img);
   } else {
     const span=document.createElement('span');
@@ -27,36 +29,104 @@ function cardEl(data){
   }
 
   const body=document.createElement('div'); body.className='card-body';
+  
+  // Title
   const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
-  const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description||'';
+  body.appendChild(title);
 
-  const platforms=document.createElement('div'); platforms.className='platforms'; platforms.setAttribute('aria-label','Online platforms');
-  (data.platforms||[]).forEach(p=>{const a=document.createElement('a'); a.className='pill'; a.href=p.url||'#'; a.setAttribute('aria-label',p.name); a.textContent=p.name; platforms.appendChild(a)});
-
-  const row=document.createElement('div'); row.className='row';
-  const chips=document.createElement('div'); chips.className='chips';
-  if(data.membershipCost){
-    if(data.membershipCost.monthly){const c=document.createElement('span'); c.className='chip accent'; c.textContent=data.membershipCost.monthly; chips.appendChild(c)}
-    if(data.membershipCost.yearly){const c=document.createElement('span'); c.className='chip accent'; c.textContent=data.membershipCost.yearly; chips.appendChild(c)}
+  // Description
+  if(data.description){
+    const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description;
+    body.appendChild(desc);
   }
-  const members=document.createElement('span'); members.className='chip'; members.textContent=`Members • ${Number(data.membersCount||0).toLocaleString()}`; chips.appendChild(members);
-  const founded=document.createElement('span'); founded.className='chip'; founded.setAttribute('aria-label','Founded date'); founded.textContent=`Founded: ${data.foundedDate}`;
 
-  row.appendChild(chips); row.appendChild(founded);
-
-  const cta=document.createElement('a'); cta.className='cta'; cta.href='#'; cta.setAttribute('aria-label',`Join ${data.name}`); cta.textContent='Join community';
-
+  // Founder section
+  const primaryPlatform=data.platforms?.[0];
   if(data.founderName || data.founderImage){
-    const founderWrap=document.createElement('div'); founderWrap.className='row';
-    const founderChip=document.createElement('span'); founderChip.className='chip'; founderChip.textContent=`Founder • ${data.founderName||''}`;
-    if(data.founderImage){const img=document.createElement('img'); img.src=data.founderImage; img.alt=`${data.founderName} photo`; img.width=24; img.height=24; img.style.borderRadius='50%'; img.style.marginRight='8px'; founderChip.prepend(img)}
-    founderWrap.appendChild(founderChip);
-    body.appendChild(founderWrap);
+    const founderChip=document.createElement('div'); founderChip.className='founder-chip';
+    if(data.founderImage){
+      const img=document.createElement('img'); 
+      img.src=data.founderImage; 
+      img.alt=`${data.founderName} photo`; 
+      img.className='founder-img'; 
+      founderChip.appendChild(img);
+    }
+    const founderInfo=document.createElement('div'); founderInfo.className='founder-info';
+    const founderLabel=document.createElement('span'); founderLabel.className='founder-label'; founderLabel.textContent='Founder';
+    const founderName=document.createElement('span'); founderName.className='founder-name'; founderName.textContent=data.founderName||'';
+    founderInfo.appendChild(founderLabel);
+    founderInfo.appendChild(founderName);
+    founderChip.appendChild(founderInfo);
+    body.appendChild(founderChip);
   }
 
-  body.appendChild(title); body.appendChild(desc); body.appendChild(platforms); body.appendChild(row); body.appendChild(cta);
-  article.appendChild(logo); article.appendChild(body);
-  article.addEventListener('pointermove',(e)=>{const r=article.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100;const y=(e.clientY-r.top)/r.height*100;article.style.setProperty('--mx',x+'%');article.style.setProperty('--my',y+'%')});
+  // Stats row
+  const statsRow=document.createElement('div'); statsRow.className='stats-row';
+  
+  // Members stat
+  const membersStat=document.createElement('div'); membersStat.className='stat-item';
+  const membersValue=document.createElement('span'); membersValue.className='stat-value'; membersValue.textContent=Number(data.membersCount||0).toLocaleString();
+  const membersLabel=document.createElement('span'); membersLabel.className='stat-label'; membersLabel.textContent='Members';
+  membersStat.appendChild(membersValue);
+  membersStat.appendChild(membersLabel);
+  statsRow.appendChild(membersStat);
+
+  // Cost stat
+  const monthlyCost=typeof data.membershipCost==='string'?data.membershipCost:data.membershipCost?.monthly;
+  if(monthlyCost){
+    const costStat=document.createElement('div'); costStat.className='stat-item';
+    const costValue=document.createElement('span'); costValue.className='stat-value'; costValue.textContent=monthlyCost;
+    const costLabel=document.createElement('span'); costLabel.className='stat-label'; costLabel.textContent='Monthly';
+    costStat.appendChild(costValue);
+    costStat.appendChild(costLabel);
+    statsRow.appendChild(costStat);
+  }
+
+  // Founded stat
+  if(data.foundedDate){
+    const foundedStat=document.createElement('div'); foundedStat.className='stat-item';
+    const year=new Date(data.foundedDate).getFullYear();
+    const foundedValue=document.createElement('span'); foundedValue.className='stat-value'; foundedValue.textContent=year;
+    const foundedLabel=document.createElement('span'); foundedLabel.className='stat-label'; foundedLabel.textContent='Founded';
+    foundedStat.appendChild(foundedValue);
+    foundedStat.appendChild(foundedLabel);
+    statsRow.appendChild(foundedStat);
+  }
+  body.appendChild(statsRow);
+
+  // Platform
+  if(primaryPlatform){
+    const platforms=document.createElement('div'); platforms.className='platforms';
+    const a=document.createElement('a'); a.className='pill platform-pill'; a.href=primaryPlatform.url||'#';
+    if(a.href !== '#'){a.target='_blank'; a.rel='noopener noreferrer';}
+    if(primaryPlatform.icon){
+      const icon=document.createElement('span'); icon.className='platform-icon';
+      const iconImg=document.createElement('img'); iconImg.src=primaryPlatform.icon; iconImg.alt=`${primaryPlatform.name} icon`;
+      icon.appendChild(iconImg); a.appendChild(icon);
+    }
+    const label=document.createElement('span'); label.textContent=primaryPlatform.name; a.appendChild(label);
+    platforms.appendChild(a); body.appendChild(platforms);
+  }
+
+  // CTA
+  const cta=document.createElement('a'); cta.className='cta';
+  const ctaHref=data.communityUrl||primaryPlatform?.url||'#';
+  cta.href=ctaHref; cta.textContent='Join Community →';
+  if(ctaHref && ctaHref !== '#'){cta.target='_blank'; cta.rel='noopener noreferrer';}
+  body.appendChild(cta);
+
+  article.appendChild(logo); 
+  article.appendChild(body);
+  
+  // Mouse tracking for glow effect
+  article.addEventListener('pointermove',(e)=>{
+    const r=article.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*100;
+    const y=(e.clientY-r.top)/r.height*100;
+    article.style.setProperty('--mx',x+'%');
+    article.style.setProperty('--my',y+'%');
+  });
+  
   return article;
 }
 
@@ -67,9 +137,15 @@ async function render(){
   try{
     const res=await fetch('data/communities.json',{cache:'no-cache'});
     const items=await res.json();
-    items.forEach(item=>{const el=cardEl(item); mount.appendChild(el); io.observe(el)});
+    items.forEach((item,i)=>{
+      const el=cardEl(item);
+      el.style.animationDelay=`${i*0.1}s`;
+      mount.appendChild(el);
+      io.observe(el);
+    });
   }catch(err){
-    const msg=document.createElement('div'); msg.className='chip'; msg.textContent='Failed to load communities.'; document.querySelector('main').prepend(msg);
+    const msg=document.createElement('div'); msg.className='chip'; msg.textContent='Failed to load communities.';
+    document.querySelector('main').prepend(msg);
     console.error(err);
   }
 }
