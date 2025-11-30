@@ -14,9 +14,9 @@ function cardEl(data){
   article.style.setProperty('--accent', data.colors?.[0]||'var(--accent)');
   article.style.setProperty('--accent-2', data.colors?.[1]||'var(--accent-2)');
 
-  // Logo
-  const logo=document.createElement('div');
-  logo.className='logo';
+  const top=document.createElement('div'); top.className='card-top';
+  const logoWrap=document.createElement('div'); logoWrap.className='logo-wrap';
+  const logo=document.createElement('div'); logo.className='logo';
   if(data.logoImage){
     const img=document.createElement('img');
     img.src=data.logoImage;
@@ -27,77 +27,28 @@ function cardEl(data){
     span.textContent=(data.name||'').split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
     logo.appendChild(span);
   }
+  logoWrap.appendChild(logo);
 
-  const body=document.createElement('div'); body.className='card-body';
-  
-  // Title
-  const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
-  body.appendChild(title);
-
-  // Description
-  if(data.description){
-    const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description;
-    body.appendChild(desc);
-  }
-
-  // Founder section
-  const primaryPlatform=data.platforms?.[0];
-  if(data.founderName || data.founderImage){
-    const founderChip=document.createElement('div'); founderChip.className='founder-chip';
-    if(data.founderImage){
-      const img=document.createElement('img'); 
-      img.src=data.founderImage; 
-      img.alt=`${data.founderName} photo`; 
-      img.className='founder-img'; 
-      founderChip.appendChild(img);
-    }
-    const founderInfo=document.createElement('div'); founderInfo.className='founder-info';
-    const founderLabel=document.createElement('span'); founderLabel.className='founder-label'; founderLabel.textContent='Founder';
-    const founderName=document.createElement('span'); founderName.className='founder-name'; founderName.textContent=data.founderName||'';
-    founderInfo.appendChild(founderLabel);
-    founderInfo.appendChild(founderName);
-    founderChip.appendChild(founderInfo);
-    body.appendChild(founderChip);
-  }
-
-  // Stats row
-  const statsRow=document.createElement('div'); statsRow.className='stats-row';
-  
-  // Members stat
-  const membersStat=document.createElement('div'); membersStat.className='stat-item';
-  const membersValue=document.createElement('span'); membersValue.className='stat-value'; membersValue.textContent=Number(data.membersCount||0).toLocaleString();
-  const membersLabel=document.createElement('span'); membersLabel.className='stat-label'; membersLabel.textContent='Members';
-  membersStat.appendChild(membersValue);
-  membersStat.appendChild(membersLabel);
-  statsRow.appendChild(membersStat);
-
-  // Cost stat
-  const monthlyCost=typeof data.membershipCost==='string'?data.membershipCost:data.membershipCost?.monthly;
-  if(monthlyCost){
-    const costStat=document.createElement('div'); costStat.className='stat-item';
-    const costValue=document.createElement('span'); costValue.className='stat-value'; costValue.textContent=monthlyCost;
-    const costLabel=document.createElement('span'); costLabel.className='stat-label'; costLabel.textContent='Monthly';
-    costStat.appendChild(costValue);
-    costStat.appendChild(costLabel);
-    statsRow.appendChild(costStat);
-  }
-
-  // Founded stat
+  const meta=document.createElement('div'); meta.className='card-meta';
+  const badge=document.createElement('span'); badge.className='micro-chip accent'; badge.textContent='Community node';
+  meta.appendChild(badge);
   if(data.foundedDate){
-    const foundedStat=document.createElement('div'); foundedStat.className='stat-item';
     const year=new Date(data.foundedDate).getFullYear();
-    const foundedValue=document.createElement('span'); foundedValue.className='stat-value'; foundedValue.textContent=year;
-    const foundedLabel=document.createElement('span'); foundedLabel.className='stat-label'; foundedLabel.textContent='Founded';
-    foundedStat.appendChild(foundedValue);
-    foundedStat.appendChild(foundedLabel);
-    statsRow.appendChild(foundedStat);
+    const since=document.createElement('span'); since.className='micro-chip'; since.textContent=`Since ${year}`;
+    meta.appendChild(since);
   }
-  body.appendChild(statsRow);
 
-  // Platform
+  top.appendChild(logoWrap);
+  top.appendChild(meta);
+
+  const main=document.createElement('div'); main.className='card-main';
+  const titleRow=document.createElement('div'); titleRow.className='title-row';
+  const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
+  titleRow.appendChild(title);
+
+  const primaryPlatform=data.platforms?.[0];
   if(primaryPlatform){
-    const platforms=document.createElement('div'); platforms.className='platforms';
-    const a=document.createElement('a'); a.className='pill platform-pill'; a.href=primaryPlatform.url||'#';
+    const a=document.createElement('a'); a.className='platform-pill'; a.href=primaryPlatform.url||'#';
     if(a.href !== '#'){a.target='_blank'; a.rel='noopener noreferrer';}
     if(primaryPlatform.icon){
       const icon=document.createElement('span'); icon.className='platform-icon';
@@ -105,20 +56,70 @@ function cardEl(data){
       icon.appendChild(iconImg); a.appendChild(icon);
     }
     const label=document.createElement('span'); label.textContent=primaryPlatform.name; a.appendChild(label);
-    platforms.appendChild(a); body.appendChild(platforms);
+    titleRow.appendChild(a);
   }
 
-  // CTA
+  main.appendChild(titleRow);
+
+  if(data.description){
+    const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description;
+    main.appendChild(desc);
+  }
+
+  const statGrid=document.createElement('div'); statGrid.className='stat-grid';
+  const membersStat=document.createElement('div'); membersStat.className='stat-block';
+  membersStat.innerHTML=`<span class="stat-label">Members</span><span class="stat-value">${Number(data.membersCount||0).toLocaleString()}</span>`;
+  statGrid.appendChild(membersStat);
+
+  const monthlyCost=typeof data.membershipCost==='string'?data.membershipCost:data.membershipCost?.monthly;
+  if(monthlyCost){
+    const cost=document.createElement('div'); cost.className='stat-block';
+    cost.innerHTML=`<span class="stat-label">Monthly</span><span class="stat-value">${monthlyCost}</span>`;
+    statGrid.appendChild(cost);
+  }
+
+  if(data.foundedDate){
+    const year=new Date(data.foundedDate).getFullYear();
+    const founded=document.createElement('div'); founded.className='stat-block';
+    founded.innerHTML=`<span class="stat-label">Founded</span><span class="stat-value">${year}</span>`;
+    statGrid.appendChild(founded);
+  }
+  main.appendChild(statGrid);
+
+  const signal=document.createElement('div'); signal.className='signal-bar';
+  main.appendChild(signal);
+
+  if(data.founderName || data.founderImage){
+    const founderRow=document.createElement('div'); founderRow.className='founder-row';
+    if(data.founderImage){
+      const img=document.createElement('img');
+      img.src=data.founderImage;
+      img.alt=`${data.founderName||'Founder'} photo`;
+      img.className='founder-img';
+      founderRow.appendChild(img);
+    }
+    const info=document.createElement('div'); info.className='founder-info';
+    const label=document.createElement('span'); label.className='founder-label'; label.textContent='Founder';
+    const name=document.createElement('span'); name.className='founder-name'; name.textContent=data.founderName||'Anonymous';
+    info.appendChild(label); info.appendChild(name);
+    founderRow.appendChild(info);
+    main.appendChild(founderRow);
+  }
+
+  const ctaRow=document.createElement('div'); ctaRow.className='cta-row';
   const cta=document.createElement('a'); cta.className='cta';
   const ctaHref=data.communityUrl||primaryPlatform?.url||'#';
-  cta.href=ctaHref; cta.textContent='Join Community →';
+  cta.href=ctaHref; cta.innerHTML='Enter portal <span>↗</span>';
   if(ctaHref && ctaHref !== '#'){cta.target='_blank'; cta.rel='noopener noreferrer';}
-  body.appendChild(cta);
+  ctaRow.appendChild(cta);
 
-  article.appendChild(logo); 
-  article.appendChild(body);
-  
-  // Mouse tracking for glow effect
+  const vibe=document.createElement('span'); vibe.className='micro-chip'; vibe.textContent='Live orbit';
+  ctaRow.appendChild(vibe);
+
+  article.appendChild(top);
+  article.appendChild(main);
+  article.appendChild(ctaRow);
+
   article.addEventListener('pointermove',(e)=>{
     const r=article.getBoundingClientRect();
     const x=(e.clientX-r.left)/r.width*100;
@@ -126,7 +127,7 @@ function cardEl(data){
     article.style.setProperty('--mx',x+'%');
     article.style.setProperty('--my',y+'%');
   });
-  
+
   return article;
 }
 
