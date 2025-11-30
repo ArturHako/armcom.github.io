@@ -14,7 +14,13 @@ function cardEl(data){
   article.style.setProperty('--accent', data.colors?.[0]||'var(--accent)');
   article.style.setProperty('--accent-2', data.colors?.[1]||'var(--accent-2)');
 
-  // Logo
+  const shell=document.createElement('div');
+  shell.className='card-shell';
+
+  // Header block
+  const top=document.createElement('div');
+  top.className='card-top';
+
   const logo=document.createElement('div');
   logo.className='logo';
   if(data.logoImage){
@@ -28,27 +34,27 @@ function cardEl(data){
     logo.appendChild(span);
   }
 
-  const body=document.createElement('div'); body.className='card-body';
-  
-  // Title
+  const titleBlock=document.createElement('div');
+  titleBlock.className='title-block';
   const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
-  body.appendChild(title);
-
-  // Description
+  titleBlock.appendChild(title);
   if(data.description){
     const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description;
-    body.appendChild(desc);
+    titleBlock.appendChild(desc);
   }
+  top.appendChild(logo);
+  top.appendChild(titleBlock);
+  shell.appendChild(top);
 
-  // Founder section
+  // Founder chip
   const primaryPlatform=data.platforms?.[0];
   if(data.founderName || data.founderImage){
     const founderChip=document.createElement('div'); founderChip.className='founder-chip';
     if(data.founderImage){
-      const img=document.createElement('img'); 
-      img.src=data.founderImage; 
-      img.alt=`${data.founderName} photo`; 
-      img.className='founder-img'; 
+      const img=document.createElement('img');
+      img.src=data.founderImage;
+      img.alt=`${data.founderName} photo`;
+      img.className='founder-img';
       founderChip.appendChild(img);
     }
     const founderInfo=document.createElement('div'); founderInfo.className='founder-info';
@@ -57,13 +63,12 @@ function cardEl(data){
     founderInfo.appendChild(founderLabel);
     founderInfo.appendChild(founderName);
     founderChip.appendChild(founderInfo);
-    body.appendChild(founderChip);
+    shell.appendChild(founderChip);
   }
 
-  // Stats row
-  const statsRow=document.createElement('div'); statsRow.className='stats-row';
-  
-  // Members stat
+  // Stat stack
+  const statsRow=document.createElement('div'); statsRow.className='stat-stack';
+
   const membersStat=document.createElement('div'); membersStat.className='stat-item';
   const membersValue=document.createElement('span'); membersValue.className='stat-value'; membersValue.textContent=Number(data.membersCount||0).toLocaleString();
   const membersLabel=document.createElement('span'); membersLabel.className='stat-label'; membersLabel.textContent='Members';
@@ -71,18 +76,16 @@ function cardEl(data){
   membersStat.appendChild(membersLabel);
   statsRow.appendChild(membersStat);
 
-  // Cost stat
   const monthlyCost=typeof data.membershipCost==='string'?data.membershipCost:data.membershipCost?.monthly;
   if(monthlyCost){
     const costStat=document.createElement('div'); costStat.className='stat-item';
     const costValue=document.createElement('span'); costValue.className='stat-value'; costValue.textContent=monthlyCost;
-    const costLabel=document.createElement('span'); costLabel.className='stat-label'; costLabel.textContent='Monthly';
+    const costLabel=document.createElement('span'); costLabel.className='stat-label'; costLabel.textContent='Membership';
     costStat.appendChild(costValue);
     costStat.appendChild(costLabel);
     statsRow.appendChild(costStat);
   }
 
-  // Founded stat
   if(data.foundedDate){
     const foundedStat=document.createElement('div'); foundedStat.className='stat-item';
     const year=new Date(data.foundedDate).getFullYear();
@@ -92,12 +95,12 @@ function cardEl(data){
     foundedStat.appendChild(foundedLabel);
     statsRow.appendChild(foundedStat);
   }
-  body.appendChild(statsRow);
+  shell.appendChild(statsRow);
 
   // Platform
   if(primaryPlatform){
     const platforms=document.createElement('div'); platforms.className='platforms';
-    const a=document.createElement('a'); a.className='pill platform-pill'; a.href=primaryPlatform.url||'#';
+    const a=document.createElement('a'); a.className='platform-pill'; a.href=primaryPlatform.url||'#';
     if(a.href !== '#'){a.target='_blank'; a.rel='noopener noreferrer';}
     if(primaryPlatform.icon){
       const icon=document.createElement('span'); icon.className='platform-icon';
@@ -105,28 +108,36 @@ function cardEl(data){
       icon.appendChild(iconImg); a.appendChild(icon);
     }
     const label=document.createElement('span'); label.textContent=primaryPlatform.name; a.appendChild(label);
-    platforms.appendChild(a); body.appendChild(platforms);
+    platforms.appendChild(a); shell.appendChild(platforms);
   }
 
-  // CTA
+  const ctaRow=document.createElement('div'); ctaRow.className='cta-row';
   const cta=document.createElement('a'); cta.className='cta';
   const ctaHref=data.communityUrl||primaryPlatform?.url||'#';
   cta.href=ctaHref; cta.textContent='Join Community →';
   if(ctaHref && ctaHref !== '#'){cta.target='_blank'; cta.rel='noopener noreferrer';}
-  body.appendChild(cta);
+  ctaRow.appendChild(cta);
+  shell.appendChild(ctaRow);
 
-  article.appendChild(logo); 
-  article.appendChild(body);
-  
-  // Mouse tracking for glow effect
+  article.appendChild(shell);
+
+  // Mouse tracking for glow & tilt
   article.addEventListener('pointermove',(e)=>{
     const r=article.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width*100;
-    const y=(e.clientY-r.top)/r.height*100;
-    article.style.setProperty('--mx',x+'%');
-    article.style.setProperty('--my',y+'%');
+    const x=(e.clientX-r.left)/r.width;
+    const y=(e.clientY-r.top)/r.height;
+    const rx=((0.5 - y)*10).toFixed(2)+'deg';
+    const ry=((x - 0.5)*10).toFixed(2)+'deg';
+    article.style.setProperty('--mx',`${x*100}%`);
+    article.style.setProperty('--my',`${y*100}%`);
+    shell.style.setProperty('--rx',rx);
+    shell.style.setProperty('--ry',ry);
   });
-  
+  article.addEventListener('pointerleave',()=>{
+    shell.style.removeProperty('--rx');
+    shell.style.removeProperty('--ry');
+  });
+
   return article;
 }
 
