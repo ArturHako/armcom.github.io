@@ -92,7 +92,14 @@ function cardEl(data){
   const statsRow=document.createElement('div'); statsRow.className='stat-stack';
 
   const membersStat=document.createElement('div'); membersStat.className='stat-item';
-  const membersValue=document.createElement('span'); membersValue.className='stat-value'; membersValue.textContent=Number(data.membersCount||0).toLocaleString();
+const membersValue=document.createElement('span'); membersValue.className='stat-value';
+const rawCount=data.membersCount;
+const numericCount=typeof rawCount==='string'
+    ? Number(rawCount.replace(/[^\d.-]/g,''))
+    : Number(rawCount);
+membersValue.textContent=Number.isFinite(numericCount) && numericCount>=0
+    ? numericCount.toLocaleString()
+    : (rawCount ?? '—');
   const membersLabel=document.createElement('span'); membersLabel.className='stat-label'; membersLabel.textContent='Անդամներ';
   membersStat.appendChild(membersValue);
   membersStat.appendChild(membersLabel);

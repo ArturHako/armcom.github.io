@@ -104,7 +104,7 @@ header{position:sticky;top:0;z-index:5;backdrop-filter:saturate(1.2) blur(14px);
 @keyframes float{to{transform:translateY(-12px) rotate(2deg)}}
 
 .cards-grid{position:relative;z-index:1}
-#cards{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+#cards{display:grid;gap:24px;grid-template-columns:repeat(2,minmax(0,1fr))}
 
 /* Card design */
 .community-card{position:relative;perspective:1200px}
@@ -228,6 +228,7 @@ header{position:sticky;top:0;z-index:5;backdrop-filter:saturate(1.2) blur(14px);
   .hero{grid-template-columns:1fr;padding:22px}
   .hero-orb{justify-self:start}
   header{position:sticky}
+  #cards{grid-template-columns:1fr}
 }
 @media(max-width:520px){
   .card-top{grid-template-columns:1fr;justify-items:start}
