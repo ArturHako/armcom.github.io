@@ -1,5 +1,5 @@
-const root=document.documentElement;const toggle=document.getElementById('themeToggle');
-function setTheme(mode){root.setAttribute('data-theme',mode);toggle.setAttribute('data-mode',mode);localStorage.setItem('theme',mode)}
+const root=document.documentElement;const toggle=document.getElementById('themeToggle');const themeLabel=document.getElementById('themeLabel');
+function setTheme(mode){root.setAttribute('data-theme',mode);toggle.setAttribute('data-mode',mode);localStorage.setItem('theme',mode);if(themeLabel)themeLabel.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);}
 (function(){const saved=localStorage.getItem('theme');const preferred=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';setTheme(saved||preferred)})();
 if(toggle){
   toggle.addEventListener('click',()=>setTheme(toggle.getAttribute('data-mode')==='dark'?'light':'dark'));
@@ -29,26 +29,32 @@ function cardEl(data){
   }
 
   const body=document.createElement('div'); body.className='card-body';
-  
+  const head=document.createElement('div'); head.className='card-head';
+  const meta=document.createElement('div');
+
   // Title
   const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
-  body.appendChild(title);
+  meta.appendChild(title);
 
   // Description
   if(data.description){
     const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description;
-    body.appendChild(desc);
+    meta.appendChild(desc);
   }
+
+  head.appendChild(logo);
+  head.appendChild(meta);
+  body.appendChild(head);
 
   // Founder section
   const primaryPlatform=data.platforms?.[0];
   if(data.founderName || data.founderImage){
     const founderChip=document.createElement('div'); founderChip.className='founder-chip';
     if(data.founderImage){
-      const img=document.createElement('img'); 
-      img.src=data.founderImage; 
-      img.alt=`${data.founderName} photo`; 
-      img.className='founder-img'; 
+      const img=document.createElement('img');
+      img.src=data.founderImage;
+      img.alt=`${data.founderName} photo`;
+      img.className='founder-img';
       founderChip.appendChild(img);
     }
     const founderInfo=document.createElement('div'); founderInfo.className='founder-info';
@@ -62,7 +68,7 @@ function cardEl(data){
 
   // Stats row
   const statsRow=document.createElement('div'); statsRow.className='stats-row';
-  
+
   // Members stat
   const membersStat=document.createElement('div'); membersStat.className='stat-item';
   const membersValue=document.createElement('span'); membersValue.className='stat-value'; membersValue.textContent=Number(data.membersCount||0).toLocaleString();
@@ -115,9 +121,8 @@ function cardEl(data){
   if(ctaHref && ctaHref !== '#'){cta.target='_blank'; cta.rel='noopener noreferrer';}
   body.appendChild(cta);
 
-  article.appendChild(logo); 
   article.appendChild(body);
-  
+
   // Mouse tracking for glow effect
   article.addEventListener('pointermove',(e)=>{
     const r=article.getBoundingClientRect();
@@ -126,7 +131,7 @@ function cardEl(data){
     article.style.setProperty('--mx',x+'%');
     article.style.setProperty('--my',y+'%');
   });
-  
+
   return article;
 }
 
@@ -137,6 +142,8 @@ async function render(){
   try{
     const res=await fetch('data/communities.json',{cache:'no-cache'});
     const items=await res.json();
+    const counter=document.getElementById('communityCount');
+    if(counter) counter.textContent=items.length;
     items.forEach((item,i)=>{
       const el=cardEl(item);
       el.style.animationDelay=`${i*0.1}s`;
