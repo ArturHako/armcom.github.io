@@ -4,35 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Armenian Communities</title>
-  <meta name="description" content="A single-page directory of Armenian communities with modern cards, theme toggle, platforms and member counts." />
+  <meta name="description" content="A neon-grade directory of Armenian communities with animated identity cards, platform links, and member highlights." />
   <style>
     /* Critical CSS - full styles in external stylesheet */
     :root {
-      --bg: #0b1020; --bg-elev: #131a2e; --text: #eaf0ff; --muted: #a7b0c8;
-      --card: #121a2b; --ring: #6ea8ff; --accent: #5b8cff; --accent-2: #a58bff;
-      --shadow: 0 12px 36px rgba(0,0,0,.55); --border: rgba(255,255,255,.08);
-      --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent);
+      --bg:#050915; --text:#e8efff; --muted:#94a0bf; --accent:#67b6ff; --accent-2:#c06bff;
+      --card:#0b1224; --border:rgba(255,255,255,.08); --shadow:0 18px 48px rgba(0,0,0,.55);
     }
-    html[data-theme="light"] { --bg:#f6f8ff; --bg-elev:#ffffff; --text:#0f172a; --muted:#51607a; --card:#ffffff; --ring:#335dff; --accent:#335dff; --accent-2:#8a5cff; --shadow:0 10px 30px rgba(16,24,40,.10); --border:rgba(2,6,23,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 92%, transparent); }
-    html[data-theme="dark"] { --bg:#0b1020; --bg-elev:#10172b; --text:#eaf0ff; --muted:#9aa7c9; --card:#0f1528; --ring:#6ea8ff; --accent:#6ea8ff; --accent-2:#a58bff; --shadow:0 12px 36px rgba(0,0,0,.55); --border:rgba(255,255,255,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent); }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,Inter,Arial,"Noto Sans",system-ui,sans-serif;color:var(--text);
-      background:radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.12), transparent 50%),
-                 radial-gradient(1000px 500px at 110% 0%, rgba(168,85,247,.10), transparent 50%),
-                 linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px 64px}
-    #cards{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
-    .community-card{opacity:0;transform:translateY(8px)}
+    html[data-theme="light"] { --bg:#f4f6ff; --text:#0d152a; --muted:#5c667d; --accent:#3457ff; --accent-2:#ad4eff; --card:#ffffff; --border:rgba(2,6,23,.09); --shadow:0 14px 36px rgba(16,24,40,.12); }
+    html[data-theme="dark"] { --bg:#050915; --text:#e8efff; --muted:#94a0bf; --accent:#67b6ff; --accent-2:#c06bff; --card:#0b1224; --border:rgba(255,255,255,.08); --shadow:0 18px 48px rgba(0,0,0,.55); }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 26px 18px 64px; }
+    #cards { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .community-card { opacity: 0; transform: translateY(12px); }
   </style>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
+  <div class="bg-layer" aria-hidden="true"></div>
   <header>
-    <div class="hdr">
+    <div class="hdr wrap">
       <div class="title">
         <span class="flag-arm" aria-hidden="true"></span>
-        <h1>Armenian Communities</h1>
+        <div class="title-text">
+          <p class="eyebrow">Armenian Network Atlas</p>
+          <h1>Communities of Tomorrow</h1>
+        </div>
       </div>
       <div class="actions">
         <button id="themeToggle" class="toggle" type="button" aria-label="Toggle theme" data-mode="light">
@@ -43,10 +42,21 @@
       </div>
     </div>
   </header>
-  <main>
-    <div class="wrap">
-      <div id="cards"></div>
-    </div>
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Curated by explorers</p>
+        <h2>Futuristic identity cards for every Armenian community.</h2>
+        <p class="lede">Hover, tilt, and dive into animated dossiers with platform links, founders, and living stats. Built to feel like a console from the future.</p>
+        <div class="hero-chips">
+          <span class="chip accent">Real-time glow</span>
+          <span class="chip">3D tilt</span>
+          <span class="chip">Dark / Light</span>
+        </div>
+      </div>
+      <div class="hero-orb" aria-hidden="true"></div>
+    </section>
+    <div id="cards" class="cards-grid"></div>
   </main>
   <script src="assets/js/app.js" defer></script>
 </body>
