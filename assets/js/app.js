@@ -40,7 +40,7 @@ function cardEl(data){
   if(data.logoImage){
     const img=document.createElement('img');
     img.src=data.logoImage;
-    img.alt=`${data.name} logo`;
+    img.alt=`${data.name} լոգո`;
     logo.appendChild(img);
   } else {
     const span=document.createElement('span');
@@ -73,12 +73,12 @@ function cardEl(data){
       if(founder.image){
         const img=document.createElement('img');
         img.src=founder.image;
-        img.alt=`${founder.name||'Founder'} photo`;
+        img.alt=`${founder.name||'Հիմնադիր'} լուսանկար`;
         img.className='founder-img';
         founderChip.appendChild(img);
       }
       const founderInfo=document.createElement('div'); founderInfo.className='founder-info';
-      const founderLabel=document.createElement('span'); founderLabel.className='founder-label'; founderLabel.textContent='Founder';
+      const founderLabel=document.createElement('span'); founderLabel.className='founder-label'; founderLabel.textContent='Հիմնադիր';
       const founderName=document.createElement('span'); founderName.className='founder-name'; founderName.textContent=founder.name||'';
       founderInfo.appendChild(founderLabel);
       founderInfo.appendChild(founderName);
@@ -93,7 +93,7 @@ function cardEl(data){
 
   const membersStat=document.createElement('div'); membersStat.className='stat-item';
   const membersValue=document.createElement('span'); membersValue.className='stat-value'; membersValue.textContent=Number(data.membersCount||0).toLocaleString();
-  const membersLabel=document.createElement('span'); membersLabel.className='stat-label'; membersLabel.textContent='Members';
+  const membersLabel=document.createElement('span'); membersLabel.className='stat-label'; membersLabel.textContent='Անդամներ';
   membersStat.appendChild(membersValue);
   membersStat.appendChild(membersLabel);
   statsRow.appendChild(membersStat);
@@ -102,7 +102,7 @@ function cardEl(data){
   if(monthlyCost){
     const costStat=document.createElement('div'); costStat.className='stat-item';
     const costValue=document.createElement('span'); costValue.className='stat-value'; costValue.textContent=monthlyCost;
-    const costLabel=document.createElement('span'); costLabel.className='stat-label'; costLabel.textContent='Membership';
+    const costLabel=document.createElement('span'); costLabel.className='stat-label'; costLabel.textContent='Անդամավճար';
     costStat.appendChild(costValue);
     costStat.appendChild(costLabel);
     statsRow.appendChild(costStat);
@@ -112,7 +112,7 @@ function cardEl(data){
     const foundedStat=document.createElement('div'); foundedStat.className='stat-item';
     const year=new Date(data.foundedDate).getFullYear();
     const foundedValue=document.createElement('span'); foundedValue.className='stat-value'; foundedValue.textContent=year;
-    const foundedLabel=document.createElement('span'); foundedLabel.className='stat-label'; foundedLabel.textContent='Founded';
+    const foundedLabel=document.createElement('span'); foundedLabel.className='stat-label'; foundedLabel.textContent='Հիմնադրվել է';
     foundedStat.appendChild(foundedValue);
     foundedStat.appendChild(foundedLabel);
     statsRow.appendChild(foundedStat);
@@ -122,12 +122,12 @@ function cardEl(data){
   // Platform
   if(primaryPlatform){
     const platforms=document.createElement('div'); platforms.className='platforms';
-    const platformLabel=document.createElement('span'); platformLabel.className='platform-label eyebrow'; platformLabel.textContent='Platform';
+    const platformLabel=document.createElement('span'); platformLabel.className='platform-label eyebrow'; platformLabel.textContent='Հարթակ';
     platforms.appendChild(platformLabel);
     const a=document.createElement('div'); a.className='platform-pill';
     if(primaryPlatform.icon){
       const icon=document.createElement('span'); icon.className='platform-icon';
-      const iconImg=document.createElement('img'); iconImg.src=primaryPlatform.icon; iconImg.alt=`${primaryPlatform.name} icon`;
+      const iconImg=document.createElement('img'); iconImg.src=primaryPlatform.icon; iconImg.alt=`${primaryPlatform.name} պատկերակ`;
       icon.appendChild(iconImg); a.appendChild(icon);
     }
     const label=document.createElement('span'); label.textContent=primaryPlatform.name; a.appendChild(label);
@@ -146,7 +146,7 @@ function cardEl(data){
       link.href=social.url;
       link.target='_blank';
       link.rel='noopener noreferrer';
-      link.setAttribute('aria-label',`${social.type} profile`);
+      link.setAttribute('aria-label',`${social.type} պրոֆիլ`);
       link.innerHTML=iconMarkup;
       socialRow.appendChild(link);
     });
@@ -156,7 +156,7 @@ function cardEl(data){
   const ctaRow=document.createElement('div'); ctaRow.className='cta-row';
   const cta=document.createElement('a'); cta.className='cta';
   const ctaHref=data.communityUrl||primaryPlatform?.url||'#';
-  cta.href=ctaHref; cta.textContent='Join Community →';
+  cta.href=ctaHref; cta.textContent='Միանալ համայնքին →';
   if(ctaHref && ctaHref !== '#'){cta.target='_blank'; cta.rel='noopener noreferrer';}
   ctaRow.appendChild(cta);
   shell.appendChild(ctaRow);
@@ -197,7 +197,7 @@ async function render(){
       io.observe(el);
     });
   }catch(err){
-    const msg=document.createElement('div'); msg.className='chip'; msg.textContent='Failed to load communities.';
+    const msg=document.createElement('div'); msg.className='chip'; msg.textContent='Համայնքների բեռնումը ձախողվեց։';
     document.querySelector('main').prepend(msg);
     console.error(err);
   }
