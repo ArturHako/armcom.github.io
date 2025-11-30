@@ -1,45 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Armenian Communities</title>
-  <meta name="description" content="A single-page directory of Armenian communities with modern cards, theme toggle, platforms and member counts." />
+  <meta name="description" content="A single-page directory of Armenian communities reimagined with a futuristic, animated card desk." />
   <style>
-    /* Critical CSS - full styles in external stylesheet */
+    /* Minimal critical styles to avoid flash */
     :root {
-      --bg: #0b1020; --bg-elev: #131a2e; --text: #eaf0ff; --muted: #a7b0c8;
-      --card: #121a2b; --ring: #6ea8ff; --accent: #5b8cff; --accent-2: #a58bff;
-      --shadow: 0 12px 36px rgba(0,0,0,.55); --border: rgba(255,255,255,.08);
-      --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent);
+      --bg: #050714;
+      --panel: #0a1024;
+      --text: #f5f7ff;
+      --muted: #97a0c2;
+      --accent: #73c0ff;
+      --accent-2: #b882ff;
     }
-    html[data-theme="light"] { --bg:#f6f8ff; --bg-elev:#ffffff; --text:#0f172a; --muted:#51607a; --card:#ffffff; --ring:#335dff; --accent:#335dff; --accent-2:#8a5cff; --shadow:0 10px 30px rgba(16,24,40,.10); --border:rgba(2,6,23,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 92%, transparent); }
-    html[data-theme="dark"] { --bg:#0b1020; --bg-elev:#10172b; --text:#eaf0ff; --muted:#9aa7c9; --card:#0f1528; --ring:#6ea8ff; --accent:#6ea8ff; --accent-2:#a58bff; --shadow:0 12px 36px rgba(0,0,0,.55); --border:rgba(255,255,255,.08); --chip-bg: color-mix(in oklab, var(--bg-elev) 85%, transparent); }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,Inter,Arial,"Noto Sans",system-ui,sans-serif;color:var(--text);
-      background:radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.12), transparent 50%),
-                 radial-gradient(1000px 500px at 110% 0%, rgba(168,85,247,.10), transparent 50%),
-                 linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
-      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px 64px}
-    #cards{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
-    .community-card{opacity:0;transform:translateY(8px)}
+    html, body { height: 100%; margin: 0; }
+    body { background: #050714; color: var(--text); font-family: "Inter", "SF Pro Display", system-ui, -apple-system, sans-serif; }
+    .wrap { max-width: 1220px; margin: 0 auto; padding: 24px 18px 72px; }
+    #cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 26px; }
   </style>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
+  <div class="bg-grid" aria-hidden="true"></div>
   <header>
     <div class="hdr">
       <div class="title">
-        <span class="flag-arm" aria-hidden="true"></span>
-        <h1>Armenian Communities</h1>
+        <div class="flag-arm" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">Atlas of Connection</p>
+          <h1>Armenian Communities</h1>
+        </div>
       </div>
       <div class="actions">
-        <button id="themeToggle" class="toggle" type="button" aria-label="Toggle theme" data-mode="light">
+        <button id="themeToggle" class="toggle" type="button" aria-label="Toggle theme" data-mode="dark">
           <span>☀️</span>
           <span>🌙</span>
           <span class="knob">☀️</span>
         </button>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="hero-copy">
+        <h2>Jump into a constellation of Armenian tech, art, and culture.</h2>
+        <p>Every card is a portal — hover to awaken neon pulses, discover founders, and launch directly into the platforms that power each community.</p>
+        <div class="hero-chips">
+          <span class="chip accent">Live network map</span>
+          <span class="chip">Curated platforms</span>
+          <span class="chip">Theme-aware neon</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbital">
+          <span class="ring ring-1"></span>
+          <span class="ring ring-2"></span>
+          <span class="ring ring-3"></span>
+          <div class="core">ՀՀ</div>
+        </div>
       </div>
     </div>
   </header>
