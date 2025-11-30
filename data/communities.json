@@ -2,6 +2,7 @@
   {
     "name": "LLL network",
     "logoImage": "assets/logos/lll.png",
+    "description": "Borderless clubhouse for builders, artists, and founders crafting the next wave of Armenian-led products.",
     "membershipCost": { "monthly": "$15/mo" },
     "colors": ["#2f9ad4", "#a58bff"],
     "founderImage": "assets/founders/lll.png",
