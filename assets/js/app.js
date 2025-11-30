@@ -38,13 +38,16 @@ function cardEl(data){
   titleBlock.className='title-block';
   const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
   titleBlock.appendChild(title);
+  let descWrap;
   if(data.description){
+    descWrap=document.createElement('div'); descWrap.className='description-bubble';
     const desc=document.createElement('p'); desc.className='card-desc'; desc.textContent=data.description;
-    titleBlock.appendChild(desc);
+    descWrap.appendChild(desc);
   }
   top.appendChild(logo);
   top.appendChild(titleBlock);
   shell.appendChild(top);
+  if(descWrap) shell.appendChild(descWrap);
 
   // Founder chip
   const primaryPlatform=data.platforms?.[0];
@@ -100,8 +103,9 @@ function cardEl(data){
   // Platform
   if(primaryPlatform){
     const platforms=document.createElement('div'); platforms.className='platforms';
-    const a=document.createElement('a'); a.className='platform-pill'; a.href=primaryPlatform.url||'#';
-    if(a.href !== '#'){a.target='_blank'; a.rel='noopener noreferrer';}
+    const platformLabel=document.createElement('span'); platformLabel.className='platform-label eyebrow'; platformLabel.textContent='Platform';
+    platforms.appendChild(platformLabel);
+    const a=document.createElement('div'); a.className='platform-pill';
     if(primaryPlatform.icon){
       const icon=document.createElement('span'); icon.className='platform-icon';
       const iconImg=document.createElement('img'); iconImg.src=primaryPlatform.icon; iconImg.alt=`${primaryPlatform.name} icon`;
