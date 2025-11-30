@@ -1,4 +1,6 @@
 const root=document.documentElement;const toggle=document.getElementById('themeToggle');
+const isMobile=window.matchMedia('(max-width: 820px)').matches||window.matchMedia('(pointer: coarse)').matches;
+if(isMobile) root.classList.add('is-mobile');
 const escapeHtml=(str='')=>str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const markdownToHtml=(str='')=>{
   const escaped=escapeHtml(str);
@@ -20,7 +22,9 @@ if(toggle){
   toggle.addEventListener('keyup',(e)=>{if(e.key==='Enter'||e.key===' ')toggle.click()});
 }
 
-const io=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px',threshold:0.1});
+const io=!isMobile && 'IntersectionObserver'in window
+  ? new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px',threshold:0.1})
+  : null;
 
 function cardEl(data){
   const article=document.createElement('article');
@@ -171,21 +175,23 @@ membersValue.textContent=Number.isFinite(numericCount) && numericCount>=0
   article.appendChild(shell);
 
   // Mouse tracking for glow & tilt
-  article.addEventListener('pointermove',(e)=>{
-    const r=article.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width;
-    const y=(e.clientY-r.top)/r.height;
-    const rx=((0.5 - y)*10).toFixed(2)+'deg';
-    const ry=((x - 0.5)*10).toFixed(2)+'deg';
-    article.style.setProperty('--mx',`${x*100}%`);
-    article.style.setProperty('--my',`${y*100}%`);
-    shell.style.setProperty('--rx',rx);
-    shell.style.setProperty('--ry',ry);
-  });
-  article.addEventListener('pointerleave',()=>{
-    shell.style.removeProperty('--rx');
-    shell.style.removeProperty('--ry');
-  });
+  if(!isMobile){
+    article.addEventListener('pointermove',(e)=>{
+      const r=article.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width;
+      const y=(e.clientY-r.top)/r.height;
+      const rx=((0.5 - y)*10).toFixed(2)+'deg';
+      const ry=((x - 0.5)*10).toFixed(2)+'deg';
+      article.style.setProperty('--mx',`${x*100}%`);
+      article.style.setProperty('--my',`${y*100}%`);
+      shell.style.setProperty('--rx',rx);
+      shell.style.setProperty('--ry',ry);
+    });
+    article.addEventListener('pointerleave',()=>{
+      shell.style.removeProperty('--rx');
+      shell.style.removeProperty('--ry');
+    });
+  }
 
   return article;
 }
@@ -199,9 +205,9 @@ async function render(){
     const items=await res.json();
     items.forEach((item,i)=>{
       const el=cardEl(item);
-      el.style.animationDelay=`${i*0.1}s`;
+      if(!isMobile) el.style.animationDelay=`${i*0.1}s`;
       mount.appendChild(el);
-      io.observe(el);
+      if(io){io.observe(el);} else {el.classList.add('revealed');}
     });
   }catch(err){
     const msg=document.createElement('div'); msg.className='chip'; msg.textContent='Համայնքների բեռնումը ձախողվեց։';
