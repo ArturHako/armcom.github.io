@@ -5,12 +5,18 @@
     "description": "The **LLL network** (Lifelong Learners) is a dynamic community established around the popular *Rearrange with Narek Amirkhanyan* podcast, designed to connect forward-thinking individuals. Its primary mission is to foster a collaborative environment where members can \"think, act, and create together\" through shared experiences and knowledge. The network offers exclusive access to \"Live Rearrange\" discussions with podcast guests, as well as educational masterclasses, webinars, book clubs, and outdoor activities like hiking. By bringing together Armenians from around the world, LLL creates a supportive space for professional networking, personal growth, and the exchange of ideas among people committed to continuous learning.",
     "membershipCost": { "monthly": "$15/mo" },
     "colors": ["#2f9ad4", "#a58bff"],
-    "founderImage": "assets/founders/lll.png",
-    "founderName": "Narek Amirkhanyan",
+    "founders": [
+      { "name": "Narek Amirkhanyan", "image": "assets/founders/lll.png" },
+      { "name": "Ani Mkrtchyan", "image": "assets/founders/lll.png" }
+    ],
     "foundedDate": "2022-03-10",
     "membersCount": 124,
     "platforms": [
       { "name": "Circle", "icon": "assets/platforms/circle.png" }
+    ],
+    "socials": [
+      { "type": "facebook", "url": "https://facebook.com/lll.network" },
+      { "type": "instagram", "url": "https://instagram.com/lll.network" }
     ],
     "communityUrl": "https://www.lll.network/"
   }
