@@ -56,6 +56,11 @@ function cardEl(data){
   titleBlock.className='title-block';
   const title=document.createElement('h3'); title.className='card-title'; title.textContent=data.name;
   titleBlock.appendChild(title);
+  if(isMobile){
+    const tapHint=document.createElement('span'); tapHint.className='tap-hint';
+    tapHint.textContent='Սեղմեք քարտը՝ բացելու նկարագրությունը';
+    titleBlock.appendChild(tapHint);
+  }
   let descWrap;
   if(data.description){
     descWrap=document.createElement('div'); descWrap.className='description-bubble';
