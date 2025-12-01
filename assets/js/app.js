@@ -6,14 +6,16 @@ const markdownToHtml=(str='')=>{
   const escaped=escapeHtml(str);
   return escaped
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/\*(.+?)\* /g,'<em>$1</em>')
     .replace(/\n/g,'<br>');
 };
 const socialIcons={
   facebook:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 0-10.406 8.91v-6.3H8.078V12h2.516V9.797c0-2.485 1.48-3.86 3.747-3.86 1.086 0 2.223.194 2.223.194v2.445h-1.252c-1.234 0-1.618.765-1.618 1.55V12h2.75l-.439 2.61h-2.311v6.3A9.002 9.002 0 0 0 21 12"/></svg>',
   instagram:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm11.25 1.25a1 1 0 1 1-2 0a1 1 0 0 1 2 0ZM12 8a4 4 0 1 1 0 8a4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4a2 2 0 0 0 0-4Z"/></svg>',
   twitter:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 5.5a4.1 4.1 0 0 1-1.18.32A2.06 2.06 0 0 0 20.42 4a4.13 4.13 0 0 1-1.31.5A2.05 2.05 0 0 0 12 6.05a5.82 5.82 0 0 1-4.23-2.14A2.05 2.05 0 0 0 8.38 6a2.05 2.05 0 0 1-.93-.26v.03A2.05 2.05 0 0 0 9.87 7.8a2.06 2.06 0 0 1-.93.04A2.05 2.05 0 0 0 10.9 9a4.12 4.12 0 0 1-3 0a5.8 5.8 0 0 0 3.14.92A5.81 5.81 0 0 0 17.93 7a4.12 4.12 0 0 0 1.07-1.05Z"/></svg>',
-  linkedin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.1 9.2V19H2V9.2h3.1ZM3.55 4C2.7 4 2 4.7 2 5.55S2.7 7.1 3.55 7.1c.84 0 1.55-.7 1.55-1.55C5.1 4.7 4.4 4 3.55 4ZM14.37 9.02c-1.63 0-2.64.89-3.08 1.75h-.05V9.2H8.2V19h3.12v-4.82c0-1.27.24-2.5 1.81-2.5c1.54 0 1.56 1.44 1.56 2.58V19H17V13.9c0-2.42-.52-4.88-2.63-4.88Z"/></svg>'
+  linkedin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.1 9.2V19H2V9.2h3.1ZM3.55 4C2.7 4 2 4.7 2 5.55S2.7 7.1 3.55 7.1c.84 0 1.55-.7 1.55-1.55C5.1 4.7 4.4 4 3.55 4ZM14.37 9.02c-1.63 0-2.64.89-3.08 1.75h-.05V9.2H8.2V19h3.12v-4.82c0-1.27.24-2.5 1.81-2.5c1.54 0 1.56 1.44 1.56 2.58V19H17V13.9c0-2.42-.52-4.88-2.63-4.88Z"/></svg>',
+  youtube:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2a2.4 2.4 0 0 0-1.69-1.7C18.18 5 12 5 12 5s-6.18 0-7.91.5a2.4 2.4 0 0 0-1.69 1.7A24.7 24.7 0 0 0 2 12a24.7 24.7 0 0 0 .4 4.8a2.4 2.4 0 0 0 1.69 1.7C5.82 19 12 19 12 19s6.18 0 7.91-.5a2.4 2.4 0 0 0 1.69-1.7A24.7 24.7 0 0 0 22 12a24.7 24.7 0 0 0-.4-4.8Z"/><path d="m10 15 4-3-4-3v6Z"/></svg>',
+  telegram:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.7 10.5c-.9.34-.89 1.59.01 1.92l4.62 1.66L9.2 20c.24.66 1.07.82 1.56.3l2.4-2.44 4.58 3.36c.69.51 1.67.13 1.85-.72L22.98 4.65c.2-.95-.74-1.71-1.48-1.15ZM9.5 15.8l-.23 3.21 1.92-1.95 6.2-6.11-7.9 4.85Z"/></svg>'
 };
 function setTheme(mode){root.setAttribute('data-theme',mode);toggle.setAttribute('data-mode',mode);localStorage.setItem('theme',mode)}
 (function(){const saved=localStorage.getItem('theme');const preferred=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';setTheme(saved||preferred)})();
@@ -27,11 +29,11 @@ const io=!isMobile && 'IntersectionObserver'in window
   : null;
 
 function setDescHeight(el){
-  if(!el) return;
-  const content=el.querySelector('.card-desc');
-  const openPadding=32;
-  const targetHeight=Math.ceil((content?.scrollHeight||el.scrollHeight)+openPadding);
-  el.style.setProperty('--open-height',`${targetHeight}px`);
+    if(!el) return;
+    const content=el.querySelector('.card-desc');
+    const openPadding=32;
+    const targetHeight=Math.ceil((content?.scrollHeight||el.scrollHeight)+openPadding+10);
+    el.style.setProperty('--open-height',`${targetHeight}px`);
 }
 
 function cardEl(data){
@@ -163,8 +165,12 @@ membersValue.textContent=Number.isFinite(numericCount) && numericCount>=0
   if(Array.isArray(data.socials) && data.socials.length){
     const socialRow=document.createElement('div'); socialRow.className='social-row';
     data.socials.forEach((social)=>{
-      const iconMarkup=socialIcons[social.type?.toLowerCase?.()];
-      if(!iconMarkup || !social.url) return;
+      const typeKey=social.type?.toString?.().trim().toLowerCase();
+      const iconMarkup=typeKey?socialIcons[typeKey]:null;
+      if(!social.url || !iconMarkup){
+        if(typeKey && !iconMarkup) console.warn(`Social icon not found for type "${typeKey}"`);
+        return;
+      }
       const link=document.createElement('a');
       link.className='social-icon';
       link.href=social.url;

@@ -2,7 +2,7 @@
   {
     "name": "LLL network(Ցկյանս սովորողներ)",
     "logoImage": "assets/logos/lll.png",
-    "description": "**LLL network**-ը (Lifelong Learners) դինամիկ համայնք է, որը ձևավորվել է հանրահայտ *Rearrange with Narek Amirkhanyan* փոդքասթի շուրջ՝ միավորելու ապագային նայող մարդկանց։ Նրա նպատակը «մտածել, գործել և ստեղծել միասին» սկզբունքով համագործակցային միջավայր ձևավորելն է, որտեղ անդամները կիսվում են փորձով ու գիտելիքներով։ Համայնքը առաջարկում է բացառիկ \"Live Rearrange\" քննարկումներ հյուրերի հետ, կրթական մաստեր-կլասներ, վեբինարներ, գրքային ակումբներ, ինչպես նաև արշավներ։ LLL-ն ամբողջ աշխարհից հայերին բերում է մի վայր, որտեղ կա մասնագիտական կապեր ստեղծելու, անձնական աճի և շարունակական ուսուցման գաղափարների փոխանակման աջակցող մթնոլորտ։",
+    "description": "**LLL network**-ը (Lifelong Learners) համայնք է, որը ձևավորվել է *Rearrange with Narek Amirkhanyan* փոդքասթի շուրջ՝ միավորելու ապագային նայող և ամողջ կյանքի ընթացքում կրթվող մարդկանց։ Նրա նպատակը «մտածել, գործել և ստեղծել միասին» սկզբունքով համագործակցային միջավայր ձևավորելն է, որտեղ անդամները կիսվում են փորձով ու գիտելիքներով։ Համայնքը առաջարկում է բացառիկ \"Live Rearrange\" քննարկումներ հյուրերի հետ, կրթական մաստեր-կլասներ, վեբինարներ, գրքերի քննարկումներ և արշավներ։",
     "membershipCost": { "monthly": "$15/ամիս" },
     "colors": ["#2f9ad4", "#a58bff"],
     "founders": [
@@ -25,72 +25,85 @@
     "logoImage": "assets/logos/exelist.png",
     "description": "**Exelist**-ը բիզնես ակումբ է, որը միավորում է գործարարներին և մասնագետներին՝ ստեղծելով հարթակ փորձի փոխանակման և նոր գործարար կապերի հաստատման համար։ Ակումբը կազմակերպում է փակ հանդիպումներ, նետվորքինգ միջոցառումներ և քննարկումներ, որոնք նպաստում են անդամների բիզնեսի զարգացմանը։",
     "membershipCost": { "monthly": "Անվճար" },
-    "colors": ["#09bd39", "#04ff29"],
+    "colors": ["#2cbf1f", "#0f5709"],
     "founders": [
       { "name": "Արամայիս Մարգարյան", "image": "assets/founders/exelist.png" }
     ],
-    "foundedDate": "2021",
-    "membersCount": "500+",
+    "foundedDate": "2025",
+    "membersCount": "100 - 200",
     "platforms": [
-      { "name": "Telegram", "icon": "assets/platforms/telegram.png" }
+      { "name": "Circle", "icon": "assets/platforms/circle.png" }
     ],
     "socials": [
-      { "type": "facebook", "url": "https://www.facebook.com/exelist" },
-      { "type": "instagram", "url": "https://www.instagram.com/exelist_club" },
-      { "type": "linkedin", "url": "https://www.linkedin.com/company/exelist" }
+      { "type": "facebook", "url": "https://www.facebook.com/groups/excelist" }
     ],
-    "communityUrl": "https://exelist.am/"
+    "communityUrl": "https://excelist-community.circle.so/c/1de3f7/"
   },
   {
     "name": "NetworkOfNetworks",
-    "logoImage": "assets/logos/non.png",
+    "logoImage": "assets/logos/NN.png",
     "description": "**NetworkOfNetworks**-ը հարթակ է, որը նպատակ ունի միավորել տարբեր ոլորտային ցանցերն ու համայնքները մեկ տեղում։ Այն խթանում է միջհամայնքային համագործակցությունը՝ ստեղծելով սիներգիա տարբեր մասնագիտական խմբերի միջև։",
     "membershipCost": { "monthly": "Անվճար" },
-    "colors": ["#1a1a1a", "#e6e6e6"],
-    "founders": [],
-    "foundedDate": "2022",
-    "membersCount": "N/A",
-    "platforms": [],
-    "socials": [
-       { "type": "linkedin", "url": "https://www.linkedin.com/company/network-of-networks-armenia/" }
+    "colors": ["#18b9d9", "#dce851"],
+    "founders": [
+      { "name": "Արամ Աղեկյան", "image": "assets/founders/aram.png" },
+      { "name": "Արամայիս Մարգարյան", "image": "assets/founders/exelist.png" },
+      { "name": "Աննա Հովհաննիսյան", "image": "assets/founders/anna.png" }
     ],
-    "communityUrl": ""
+    "foundedDate": "2025",
+    "membersCount": "100-200",
+    "platforms": [
+            { "name": "Circle", "icon": "assets/platforms/circle.png" }
+    ],
+    "socials": [
+       { "type": "linkedin", "url": "https://www.linkedin.com/company/nn-community/" },
+        { "type": "facebook", "url": "https://www.facebook.com/network.of.networks" },
+        { "type": "instagram", "url": "https://www.instagram.com/nn.community.arm" }
+    ],
+    "communityUrl": "https://network-of-networks.circle.so/feed"
   },
   {
     "name": "TriClub Yerevan",
     "logoImage": "assets/logos/triclub.png",
     "description": "**TriClub Yerevan**-ը Հայաստանի առաջին և ամենամեծ տրիատլոնի ակումբն է։ Այն միավորում է սպորտի սիրահարներին, ովքեր զբաղվում են լողով, հեծանվավազքով և վազքով։ Ակումբը կազմակերպում է համատեղ մարզումներ, մասնակցում է միջազգային մրցաշարերի և խթանում է առողջ ապրելակերպը Հայաստանում։",
-    "membershipCost": { "monthly": "Վճարովի" },
-    "colors": ["#e30613", "#000000"],
-    "founders": [],
-    "foundedDate": "2018",
-    "membersCount": "100+",
+    "membershipCost": { "monthly": "Անվճար" },
+    "colors": ["#e30613", "#e3740b"],
+    "founders": [
+      { "name": "Վահագն Թուխարյան", "image": "assets/founders/vahagn.png" }
+    ],
+    "foundedDate": "2020",
+    "membersCount": "500 - 1000",
     "platforms": [
-      { "name": "Facebook", "icon": "assets/platforms/facebook.png" }
+      { "name": "Telegram", "icon": "assets/platforms/telegram.png" }
     ],
     "socials": [
-      { "type": "facebook", "url": "https://www.facebook.com/TriClubYerevan" },
-      { "type": "instagram", "url": "https://www.instagram.com/triclubyerevan" }
+      { "type": "facebook", "url": "https://www.facebook.com/groups/TriClubYerevan" },
+      { "type": "instagram", "url": "https://www.instagram.com/triclubyerevan" },
+      { "type": "youtube", "url": "https://www.youtube.com/@triclubyerevan" },
+      { "type": "telegram", "url": "https://t.me/TriClubEVN" }
     ],
-    "communityUrl": "https://triclub.am/"
+    "communityUrl": "https://t.me/triYerevan"
   },
   {
     "name": "ՄԵՄ (Մարզերի երեխաները մարզերում)",
     "logoImage": "assets/logos/mem.png",
     "description": "**ՄԵՄ**-ը (Մարզերի երեխաները մարզերում) հասարակական կազմակերպություն է, որի նպատակն է բացահայտել Հայաստանի մարզերի երիտասարդների ներուժը։ Համայնքը իրականացնում է կրթական և մշակութային ծրագրեր՝ հնարավորություն տալով մարզաբնակ երիտասարդներին զարգանալ իրենց իսկ համայնքներում և դառնալ փոփոխություն կրողներ։",
-    "membershipCost": { "monthly": "Անվճար" },
-    "colors": ["#fcb900", "#000000"],
-    "founders": [],
+    "membershipCost": { "monthly": "Սոցիալական ներդրում" },
+    "colors": ["#20d60f", "#34bced"],
+    "founders": [
+      { "name": "Արամայիս Մարգարյան", "image": "assets/founders/exelist.png" }
+    ],
     "foundedDate": "2019",
-    "membersCount": "1000+",
+    "membersCount": "500 - 1000",
     "platforms": [
-       { "name": "Website", "icon": "assets/platforms/web.png" }
+       { "name": "Discord", "icon": "assets/platforms/discord.png" }
     ],
     "socials": [
-      { "type": "facebook", "url": "https://www.facebook.com/memngo" },
-      { "type": "instagram", "url": "https://www.instagram.com/mem.ngo" },
-      { "type": "linkedin", "url": "https://www.linkedin.com/company/mem-ngo/" }
+      { "type": "facebook", "url": "https://www.facebook.com/Children.of.Regions" },
+      { "type": "instagram", "url": "https://www.instagram.com/children_in_regions/" },
+      { "type": "linkedin", "url": "https://www.linkedin.com/company/regionchildren" },
+      { "type": "youtube", "url": "https://www.youtube.com/@regionchildren6528" }
     ],
-    "communityUrl": "https://mem.am/"
+    "communityUrl": "https://mem.team/"
   }
 ]
