@@ -160,6 +160,7 @@ header{position:sticky;top:0;z-index:5;backdrop-filter:saturate(1.2) blur(14px);
 .is-mobile .tap-hint{display:inline-flex}
 .description-bubble{
   --pad:0px;
+  --open-height:320px;
   margin:0;
   padding:var(--pad);
   border-radius:16px;
@@ -184,7 +185,7 @@ header{position:sticky;top:0;z-index:5;backdrop-filter:saturate(1.2) blur(14px);
 .community-card:hover .description-bubble{
   --pad:16px;
   margin:8px 0 12px;
-  max-height:220px;
+  max-height:var(--open-height);
   opacity:1;
   transform:translateY(0);
 }

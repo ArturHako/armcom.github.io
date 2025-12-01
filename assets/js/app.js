@@ -26,6 +26,14 @@ const io=!isMobile && 'IntersectionObserver'in window
   ? new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('revealed');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px',threshold:0.1})
   : null;
 
+function setDescHeight(el){
+  if(!el) return;
+  const content=el.querySelector('.card-desc');
+  const openPadding=32;
+  const targetHeight=Math.ceil((content?.scrollHeight||el.scrollHeight)+openPadding);
+  el.style.setProperty('--open-height',`${targetHeight}px`);
+}
+
 function cardEl(data){
   const article=document.createElement('article');
   article.className='community-card';
@@ -212,6 +220,10 @@ async function render(){
       const el=cardEl(item);
       if(!isMobile) el.style.animationDelay=`${i*0.1}s`;
       mount.appendChild(el);
+      const desc=el.querySelector('.description-bubble');
+      if(desc){
+        requestAnimationFrame(()=>setDescHeight(desc));
+      }
       if(io){io.observe(el);} else {el.classList.add('revealed');}
     });
   }catch(err){
@@ -220,5 +232,9 @@ async function render(){
     console.error(err);
   }
 }
+
+window.addEventListener('resize',()=>{
+  document.querySelectorAll('.description-bubble').forEach(setDescHeight);
+});
 
 render();
